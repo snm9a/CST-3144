@@ -1,0 +1,173 @@
+<html>
+
+<head>
+    <title>Vue.js Pet Depot</title>
+
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+
+<body>
+
+    <div id="app">
+
+        <header>
+
+            <h1>{{ sitename }}</h1>
+
+            <button v-on:click="showCheckout">
+
+                {{ cartItemCount }}
+
+                <span class="fas fa-cart-plus"></span>
+
+                Checkout
+
+            </button>
+
+        </header>
+
+
+        <main>
+
+            <!-- PRODUCT PAGE -->
+            <div v-if="showProduct">
+
+                <h2>{{ product.title }}</h2>
+
+                <img src="pet_depot_cat_food_sale.png" width="400">
+
+                <p v-html="product.description"></p>
+
+                <p>
+                    Price: {{ product.price }} AED
+                </p>
+
+                <p>
+                    Available: {{ product.availableInventory }}
+                </p>
+
+
+                <!-- Show this button if item can be added -->
+
+                <button
+                    v-on:click="addToCart"
+                    v-if="canAddToCart">
+
+                    Add to cart
+
+                </button>
+
+
+                <!-- Show disabled button if stock is finished -->
+
+                <button
+                    disabled="disabled"
+                    v-else>
+
+                    Add to cart
+
+                </button>
+
+            </div>
+
+
+            <!-- CHECKOUT PAGE -->
+
+            <div v-else>
+
+                <h2>Checkout</h2>
+
+                <p>
+                    Items in cart: {{ cartItemCount }}
+                </p>
+
+                <button v-on:click="showCheckout">
+                    Back to products
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script type="text/javascript">
+
+        let webstore = new Vue({
+
+            el: '#app',
+
+            data: {
+
+                sitename: "Vue.js Pet Depot",
+
+                showProduct: true,
+
+                product: {
+
+                    id: 1001,
+
+                    title: "Cat Food 25LB",
+
+                    description:
+                        "A 25 pound bag of <em>irresistible</em>, organic food for your cat.",
+
+                    price: 200,
+
+                    image: "pet_depot_cat_food_sale.png",
+
+                    availableInventory: 5
+                },
+
+                cart: []
+            },
+
+
+            methods: {
+
+                addToCart: function () {
+
+                    this.cart.push(this.product.id);
+                    this.cart.product.availableInventory--;
+
+                },
+
+
+                showCheckout: function () {
+
+                    this.showProduct = !this.showProduct;
+
+                }
+
+            },
+
+
+            computed: {
+
+                cartItemCount: function () {
+
+                    return this.cart.length;
+
+                },
+
+
+                canAddToCart: function () {
+
+                    return this.product.availableInventory > this.cartItemCount;
+                    return this.product.availableInventory >0;
+
+                }
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
